@@ -8,7 +8,9 @@
 ## Usage
 - Clone the repository or simply download the code
 - Open repository in terminal and run these commands sequentially
-<code>tsc index.ts</code> , <code>node index.js</code>
+- <code>npm install</code>
+- <code>tsc index.ts</code> 
+- <code>node index.js</code>
 - These commands does following. First typescript compiler converts typescript code to plain javascript. Then second command runs this javascript in node environment.
 
 ## Future improvements
