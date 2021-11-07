@@ -1,72 +1,91 @@
 import { question } from "readline-sync";
+// import terminalLink from "terminal-link";
+import * as readline from "readline";
+import { runInContext } from "vm";
+
+let rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+var name: string[] = process.argv;
+var res: string[] = name.slice(2);
 
 type Operator = "+" | "-" | "*" | "/";
 
-function main(): void {
-  const firstStr: string = question("Enter first number: ");
-  const operator: string = question("Enter operator: ");
-  const secondStr: string = question("Enter second number: ");
-
-  const validInput: boolean =
-    isNumber(firstStr) && isOperator(operator) && isNumber(secondStr);
-
-  if (validInput) {
-    const firstNum: number = parseInt(firstStr);
-    const secondNum: number = parseInt(secondStr);
-    const result = calculate(firstNum, operator as Operator, secondNum);
-    console.log(result);
-  } else {
-    console.log("\nInvalid Input :(");
-    setTimeout(() => {
-      console.log("\nTry again");
-      main();
-    }, 1000);
+function main(sysargs): void {
+  // Addition
+  if (sysargs[0] === "+" || sysargs[0] === "-a") {
+    add(sysargs);
   }
-}
 
-/**
- * @return {number}
- */
-function calculate(
-  firstNum: number,
-  operator: Operator,
-  secondNum: number
-): number {
-  switch (operator) {
-    case "+":
-      return firstNum + secondNum;
-      break;
-    case "-":
-      return firstNum - secondNum;
-      break;
-    case "*":
-      return firstNum * secondNum;
-      break;
-    case "/":
-      return firstNum / secondNum;
+  // Multiply
+  else if (sysargs[0] === "*" || sysargs[0] === "-m") {
+    mul(sysargs);
   }
-}
 
-/**
- * @return {boolean}
- */
-function isNumber(str: string): boolean {
-  const maybeNumber = parseInt(str);
-  return !isNaN(Number(maybeNumber));
-}
-
-/**
- * @return {boolean}
- */
-function isOperator(operator: string): boolean {
-  switch (operator) {
-    case "/":
-    case "*":
-    case "+":
-    case "-":
-      return true;
-    default:
-      return false;
+  // Divide
+  else if (sysargs[0] === "/" || sysargs[0] === "-d") {
+    div(sysargs);
   }
+
+  // Minus
+  else if (sysargs[0] === "-" || sysargs[0] === "-s") {
+    sub(sysargs);
+  }
+
+  // expressions/equations
+  else if (sysargs[0] === "=" || sysargs[0] === "-e") {
+    rl.question("Select degree of equation ", (answer) => {
+      console.log(`so you choose ${answer}`);
+      if (answer === "1") {
+        console.log("so you choose linear equation [ax + b = 0]");
+      }
+      rl.close();
+    });
+  }
+  // else {
+  //   console.log("See you later!!");
+  //   const link = terminalLink("Himanshu", "https://twitter.com/_himanshu_325");
+  //   const link2 = terminalLink(
+  //     "GitHub",
+  //     "https://github.com/himanshu007-creator/CLI-CALCULATOR"
+  //   );
+  //   console.log(`Check out this project on ${link2}`);
+  //   console.log(`made with 💗 by ${link}`);
+  //   setTimeout(function () {
+  //     return process.exit();
+  //   }, 5000);
+  // }
+  process.exit();
 }
-main();
+function add(sysargs: string[]): void {
+  var vals: string[] = res.slice(1);
+  var ans: number = 0;
+  vals.forEach((element) => {
+    ans += parseInt(element);
+  });
+  console.log(ans);
+}
+function mul(sysargs: string[]): void {
+  var vals: string[] = res.slice(1);
+  var ans: number = 1;
+  vals.forEach((element) => {
+    ans *= parseInt(element);
+  });
+  console.log(ans);
+}
+function div(sysargs: string[]): void {
+  var vals: string[] = res.slice(1);
+  var ans: number = 0;
+  ans = parseFloat(sysargs[1]) / parseFloat(sysargs[2]);
+  console.log(ans);
+}
+function sub(sysargs: string[]): void {
+  var vals: string[] = res.slice(1);
+  var ans: number = 0;
+  ans = parseInt(sysargs[1]) - parseInt(sysargs[2]);
+  console.log(ans);
+}
+
+main(res);
